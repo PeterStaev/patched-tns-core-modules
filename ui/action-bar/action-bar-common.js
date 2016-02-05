@@ -220,6 +220,27 @@ var ActionItem = (function (_super) {
     function ActionItem() {
         _super.apply(this, arguments);
     }
+    Object.defineProperty(ActionItem.prototype, "actionView", {
+        get: function () {
+            return this._actionView;
+        },
+        set: function (value) {
+            if (this._actionView !== value) {
+                if (this._actionView && this._actionBar) {
+                    this._actionBar._removeView(this._actionView);
+                }
+                this._actionView = value;
+                if (this._actionView && this._actionBar) {
+                    this._actionBar._addView(this._actionView);
+                }
+                if (this._actionBar) {
+                    this._actionBar.update();
+                }
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(ActionItem.prototype, "text", {
         get: function () {
             return this._getValue(ActionItem.textProperty);
@@ -265,6 +286,13 @@ var ActionItem = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(ActionItem.prototype, "page", {
+        get: function () {
+            return this.actionBar ? this.actionBar.page : undefined;
+        },
+        enumerable: true,
+        configurable: true
+    });
     ActionItem.prototype._raiseTap = function () {
         this._emit(ActionItem.tapEvent);
     };
@@ -272,6 +300,15 @@ var ActionItem = (function (_super) {
         var menuItem = data.object;
         if (menuItem.actionBar) {
             menuItem.actionBar.update();
+        }
+    };
+    ActionItem.prototype._addChildFromBuilder = function (name, value) {
+    	console.log("add item from builder");
+        this.actionView = value;
+    };
+    ActionItem.prototype._eachChildView = function (callback) {
+        if (this.actionView) {
+            callback(this.actionView);
         }
     };
     ActionItem.tapEvent = "tap";
