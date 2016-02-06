@@ -160,6 +160,7 @@ var ActionBar = (function (_super) {
         navigationItem.title = this.title;
     };
     ActionBar.prototype.onMeasure = function (widthMeasureSpec, heightMeasureSpec) {
+        var _this = this;
         var width = utils.layout.getMeasureSpecSize(widthMeasureSpec);
         var widthMode = utils.layout.getMeasureSpecMode(widthMeasureSpec);
         var height = utils.layout.getMeasureSpecSize(heightMeasureSpec);
@@ -179,6 +180,11 @@ var ActionBar = (function (_super) {
         if (this.titleView) {
             view.View.measureChild(this, this.titleView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.AT_MOST));
         }
+        this.actionItems.getItems().forEach(function (actionItem) {
+            if (actionItem.actionView) {
+                view.View.measureChild(_this, actionItem.actionView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.AT_MOST));
+            }
+        });
         this.setMeasuredDimension(navBarWidth, navBarHeight);
     };
     ActionBar.prototype.onLayout = function (left, top, right, bottom) {
