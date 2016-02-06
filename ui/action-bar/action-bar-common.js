@@ -107,7 +107,13 @@ var ActionBar = (function (_super) {
     });
     Object.defineProperty(ActionBar.prototype, "_childrenCount", {
         get: function () {
-            return this.titleView ? 1 : 0;
+            var actionViewsCount = 0;
+            this._actionItems.getItems().forEach(function (actionItem) {
+                if (actionItem.actionView) {
+                    actionViewsCount++;
+                }
+            });
+            return actionViewsCount + (this.titleView ? 1 : 0);
         },
         enumerable: true,
         configurable: true
@@ -140,6 +146,11 @@ var ActionBar = (function (_super) {
         if (this.titleView) {
             callback(this.titleView);
         }
+        this.actionItems.getItems().forEach(function (actionItem) {
+            if (actionItem.actionView) {
+                callback(actionItem.actionView);
+            }
+        });
     };
     ActionBar.prototype._isEmpty = function () {
         if (this.title ||
@@ -228,11 +239,11 @@ var ActionItem = (function (_super) {
             if (this._actionView !== value) {
                 if (this._actionView && this._actionBar) {
                     this._actionBar._removeView(this._actionView);
+                    this._actionView.style._resetValue(style.horizontalAlignmentProperty, observable.ValueSource.Inherited);
+                    this._actionView.style._resetValue(style.verticalAlignmentProperty, observable.ValueSource.Inherited);
                 }
                 this._actionView = value;
-                if (this._actionView && this._actionBar) {
-                    this._actionBar._addView(this._actionView);
-                }
+                this._addActionViewToActionBar();
                 if (this._actionBar) {
                     this._actionBar.update();
                 }
@@ -280,6 +291,7 @@ var ActionItem = (function (_super) {
                 this._actionBar = value;
                 if (this._actionBar) {
                     this.bindingContext = this._actionBar.bindingContext;
+                    this._addActionViewToActionBar();
                 }
             }
         },
@@ -302,14 +314,15 @@ var ActionItem = (function (_super) {
             menuItem.actionBar.update();
         }
     };
-    ActionItem.prototype._addChildFromBuilder = function (name, value) {
-    	console.log("add item from builder");
-        this.actionView = value;
-    };
-    ActionItem.prototype._eachChildView = function (callback) {
-        if (this.actionView) {
-            callback(this.actionView);
+    ActionItem.prototype._addActionViewToActionBar = function () {
+        if (this._actionView && !this._actionView._isAddedToNativeVisualTree && this._actionBar) {
+            this._actionView.style._setValue(style.horizontalAlignmentProperty, enums.HorizontalAlignment.center, observable.ValueSource.Inherited);
+            this._actionView.style._setValue(style.verticalAlignmentProperty, enums.VerticalAlignment.center, observable.ValueSource.Inherited);
+            this._actionBar._addView(this._actionView);
         }
+    };
+    ActionItem.prototype._addChildFromBuilder = function (name, value) {
+        this.actionView = value;
     };
     ActionItem.tapEvent = "tap";
     ActionItem.textProperty = new dependencyObservable.Property("text", "ActionItem", new dependencyObservable.PropertyMetadata("", null, ActionItem.onItemChanged));

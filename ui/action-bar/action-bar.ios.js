@@ -114,7 +114,14 @@ var ActionBar = (function (_super) {
         var tapHandler = TapBarItemHandlerImpl.initWithOwner(new WeakRef(item));
         item.handler = tapHandler;
         var barButtonItem;
-        if (types.isNumber(item.ios.systemIcon)) {
+        if (item.actionView && item.actionView.ios) {
+            var buttonView = UIButton.buttonWithType(UIButtonType.UIButtonTypeSystem);
+            var customView = item.actionView.ios;
+            buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
+            buttonView.frame = CGRectMake(0, 0, customView.frame.size.width, customView.frame.size.height);
+            barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
+        }
+        else if (types.isNumber(item.ios.systemIcon)) {
             barButtonItem = UIBarButtonItem.alloc().initWithBarButtonSystemItemTargetAction(item.ios.systemIcon, tapHandler, "tap");
         }
         else if (item.icon) {
