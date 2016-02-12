@@ -119,7 +119,7 @@ var ActionBar = (function (_super) {
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
             buttonView.addSubview(item.actionView.ios);
-	    buttonView.backgrounColor = UIColor.redColor();
+	    buttonView.backgroundColor = UIColor.redColor();
             barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
         }
         else if (types.isNumber(item.ios.systemIcon)) {
@@ -186,7 +186,7 @@ var ActionBar = (function (_super) {
         }
         this.actionItems.getItems().forEach(function (actionItem) {
             if (actionItem.actionView) {
-                view.View.measureChild(_this, actionItem.actionView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.AT_MOST));
+                view.View.measureChild(_this, actionItem.actionView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.EXACTLY));
             }
         });
         this.setMeasuredDimension(navBarWidth, navBarHeight);
@@ -200,8 +200,8 @@ var ActionBar = (function (_super) {
                 var measuredHeight = actionItem.actionView.getMeasuredHeight();
                 var buttonView = actionItem.actionView.ios.superview;
                 view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
-                if (buttonView && this._navigationBarHeight) {
-                    buttonView.frame = CGRectMake(0, 0, measuredWidth, this._navigationBarHeight);
+                if (buttonView) {
+                    buttonView.frame = CGRectMake(0, 0, measuredWidth, measuredHeight);
                 }
             }
         });
