@@ -201,7 +201,7 @@ var ActionBar = (function (_super) {
                 var buttonView = actionItem.actionView.ios.superview;
                 view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
                 if (buttonView) {
-                    buttonView.frame = CGRectMake(0, 0, measuredWidth, measuredHeight);
+                    buttonView.frame = CGRectMake(0, 0, measuredWidth, this._navigationBarHeight);
                 }
             }
         });
