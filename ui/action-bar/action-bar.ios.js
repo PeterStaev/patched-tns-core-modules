@@ -119,6 +119,7 @@ var ActionBar = (function (_super) {
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
             buttonView.addSubview(item.actionView.ios);
+	    buttonView.backgrounColor = UIColor.redColor();
             barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
         }
         else if (types.isNumber(item.ios.systemIcon)) {
@@ -198,12 +199,11 @@ var ActionBar = (function (_super) {
                 var measuredWidth = actionItem.actionView.getMeasuredWidth();
                 var measuredHeight = actionItem.actionView.getMeasuredHeight();
                 var buttonView = actionItem.actionView.ios.superview;
-console.log(measuredWidth, measuredHeight);
+                view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
                 if (buttonView) {
                     buttonView.frame = CGRectMake(0, 0, measuredWidth, measuredHeight);
                 }
-                 view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
-           }
+            }
         });
         _super.prototype.onLayout.call(this, left, top, right, bottom);
     };
