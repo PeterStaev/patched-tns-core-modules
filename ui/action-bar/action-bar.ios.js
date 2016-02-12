@@ -192,7 +192,13 @@ var ActionBar = (function (_super) {
         this.setMeasuredDimension(navBarWidth, navBarHeight);
     };
     ActionBar.prototype.onLayout = function (left, top, right, bottom) {
+        var _this = this;
         view.View.layoutChild(this, this.titleView, 0, 0, right - left, this._navigationBarHeight);
+        this.actionItems.getItems().forEach(function (actionItem) {
+            if (actionItem.actionView) {
+                view.View.layoutChild(_this, actionItem.actionView, 0, 0, right - left, _this._navigationBarHeight);
+            }
+        });
         _super.prototype.onLayout.call(this, left, top, right, bottom);
     };
     ActionBar.prototype._shouldApplyStyleHandlers = function () {
