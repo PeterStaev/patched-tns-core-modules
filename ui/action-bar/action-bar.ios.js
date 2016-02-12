@@ -200,7 +200,7 @@ var ActionBar = (function (_super) {
                 var measuredHeight = actionItem.actionView.getMeasuredHeight();
                 var buttonView = actionItem.actionView.ios.superview;
                 view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
-                if (buttonView) {
+                if (buttonView && this._navigationBarHeight) {
                     buttonView.frame = CGRectMake(0, 0, measuredWidth, this._navigationBarHeight);
                 }
             }
