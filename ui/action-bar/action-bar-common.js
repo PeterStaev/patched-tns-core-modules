@@ -321,6 +321,7 @@ var ActionItem = (function (_super) {
         if (this._actionView && !this._actionView._isAddedToNativeVisualTree && this._actionBar) {
             this._actionView.style._setValue(style.horizontalAlignmentProperty, enums.HorizontalAlignment.center, observable.ValueSource.Inherited);
             this._actionView.style._setValue(style.verticalAlignmentProperty, enums.VerticalAlignment.center, observable.ValueSource.Inherited);
+            this._actionBar._addView(this._actionView);
         }
     };
     ActionItem.prototype._addChildFromBuilder = function (name, value) {
