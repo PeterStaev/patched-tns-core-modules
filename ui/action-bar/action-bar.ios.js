@@ -118,7 +118,6 @@ var ActionBar = (function (_super) {
             var buttonView = UIButton.buttonWithType(UIButtonType.UIButtonTypeSystem);
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
-            item.actionView.layout(0, 0, buttonView.frame.size.width, buttonView.frame.size.height);
             buttonView.addSubview(item.actionView.ios);
             barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
         }
@@ -195,9 +194,16 @@ var ActionBar = (function (_super) {
         var _this = this;
         view.View.layoutChild(this, this.titleView, 0, 0, right - left, this._navigationBarHeight);
         this.actionItems.getItems().forEach(function (actionItem) {
-            if (actionItem.actionView) {
-                view.View.layoutChild(_this, actionItem.actionView, 0, 0, actionItem.actionView.getMeasuredWidth(), actionItem.actionView.getMeasuredHeight());
-            }
+            if (actionItem.actionView && actionItem.actionView.ios) {
+                var measuredWidth = actionItem.actionView.getMeasuredWidth();
+                var measuredHeight = actionItem.actionView.getMeasuredHeight();
+                var buttonView = actionItem.actionView.ios.superview;
+console.log(measuredWidth, measuredHeight);
+                if (buttonView) {
+                    buttonView.frame = CGRectMake(0, 0, measuredWidth, measuredHeight);
+                }
+                 view.View.layoutChild(_this, actionItem.actionView, 0, 0, measuredWidth, measuredHeight);
+           }
         });
         _super.prototype.onLayout.call(this, left, top, right, bottom);
     };
