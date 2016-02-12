@@ -196,7 +196,7 @@ var ActionBar = (function (_super) {
         view.View.layoutChild(this, this.titleView, 0, 0, right - left, this._navigationBarHeight);
         this.actionItems.getItems().forEach(function (actionItem) {
             if (actionItem.actionView) {
-                view.View.layoutChild(_this, actionItem.actionView, 0, 0, actionItem.actionView.getMeasuredWidth(), _this._navigationBarHeight);
+                view.View.layoutChild(_this, actionItem.actionView, 0, 0, actionItem.actionView.getMeasuredWidth(), actionItem.actionView.getMeasuredHeight());
             }
         });
         _super.prototype.onLayout.call(this, left, top, right, bottom);
