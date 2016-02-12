@@ -118,6 +118,7 @@ var ActionBar = (function (_super) {
             var buttonView = UIButton.buttonWithType(UIButtonType.UIButtonTypeSystem);
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
+            item.actionView.ios.userInteractionEnabled = false;
             buttonView.addSubview(item.actionView.ios);
 	    buttonView.backgroundColor = UIColor.redColor();
             barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
@@ -186,7 +187,7 @@ var ActionBar = (function (_super) {
         }
         this.actionItems.getItems().forEach(function (actionItem) {
             if (actionItem.actionView) {
-                view.View.measureChild(_this, actionItem.actionView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.EXACTLY));
+                view.View.measureChild(_this, actionItem.actionView, utils.layout.makeMeasureSpec(width, utils.layout.AT_MOST), utils.layout.makeMeasureSpec(navBarHeight, utils.layout.AT_MOST));
             }
         });
         this.setMeasuredDimension(navBarWidth, navBarHeight);
