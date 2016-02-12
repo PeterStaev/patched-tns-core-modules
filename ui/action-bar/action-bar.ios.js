@@ -117,11 +117,12 @@ var ActionBar = (function (_super) {
         if (item.actionView && item.actionView.ios) {
             var buttonView = UIButton.buttonWithType(UIButtonType.UIButtonTypeSystem);
             buttonView.tintColor = null;
+            buttonView.backgroundColor = UIColor.redColor();
             buttonView.autoresizingMask = UIViewAutoresizing.UIViewAutoresizingFlexibleLeftMargin;
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
             buttonView.addSubview(item.actionView.ios);
-			barButtonItem = UIBarButtonItem.alloc().initWithCustomView(item.actionView.ios);
+            barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
         }
         else if (types.isNumber(item.ios.systemIcon)) {
             barButtonItem = UIBarButtonItem.alloc().initWithBarButtonSystemItemTargetAction(item.ios.systemIcon, tapHandler, "tap");
@@ -157,6 +158,9 @@ var ActionBar = (function (_super) {
     ActionBar.prototype._onTitlePropertyChanged = function () {
         if (!this.page) {
             return;
+        }
+        if (this.page.frame) {
+            this.page.frame._updateActionBar();
         }
         var navigationItem = this.page.ios.navigationItem;
         navigationItem.title = this.title;
