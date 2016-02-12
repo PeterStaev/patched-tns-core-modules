@@ -117,11 +117,11 @@ var ActionBar = (function (_super) {
         if (item.actionView && item.actionView.ios) {
             var buttonView = UIButton.buttonWithType(UIButtonType.UIButtonTypeSystem);
             buttonView.tintColor = null;
-            buttonView.backgroundColor = UIColor.redColor();
             buttonView.autoresizingMask = UIViewAutoresizing.UIViewAutoresizingFlexibleLeftMargin;
             buttonView.addTargetActionForControlEvents(tapHandler, "tap", UIControlEvents.UIControlEventTouchUpInside);
             buttonView.frame = CGRectMake(0, 0, item.actionView.getMeasuredWidth(), item.actionView.getMeasuredHeight());
             buttonView.addSubview(item.actionView.ios);
+            item.actionView.onLayout(0, 0, buttonView.frame.size.width, buttonView.frame.size.height);
             barButtonItem = UIBarButtonItem.alloc().initWithCustomView(buttonView);
         }
         else if (types.isNumber(item.ios.systemIcon)) {
